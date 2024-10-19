@@ -7,6 +7,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $is_mitra = $_POST['is_mitra'];
 
     $queryRegis = "insert into users (username, password, is_mitra) values ('$username', '$password', '$is_mitra')";
+    
     if (mysqli_query($conn, $queryRegis)) {
         echo "<script>
         alert('Registrasi Berhasil! Anda akan diarahkan ke halaman Login.')

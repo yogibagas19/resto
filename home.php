@@ -13,17 +13,19 @@ $sessionId = $_SESSION['id'];
 
 
 // set session nama resto dari tabel resto
-if ($sessionMitra == 1) {
-    $queryResto = "select * from resto where added_by = '$sessionUsername'";
+// if ($sessionMitra == 1) {
+//     $queryResto = "select * from resto where added_by = '$sessionUsername'";
 
-    $hasil = mysqli_query($conn, $queryResto);
+//     $hasil = mysqli_query($conn, $queryResto);
 
-    if ($hasil->num_rows > 0) {
-        $row = $hasil->fetch_assoc();
+//     if ($hasil->num_rows > 0) {
+//         $row = $hasil->fetch_assoc();
 
-        $_SESSION['resto'] = $row['nama'];
-    }
-}
+//         $_SESSION['resto'] = $row['nama'];
+//     }
+// }
+
+// $sessionResto = $_SESSION['resto'];
 
 if ($_SERVER["REQUEST_METHOD"] == 'POST') {
     $queryMitra = "update users set is_mitra = 1 where id = '$sessionId'";
@@ -68,6 +70,10 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
         </div>
         <p>Ini Header</p>
     </header>
+
+    <main>
+
+    </main>
 
 
 
