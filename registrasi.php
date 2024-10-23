@@ -38,14 +38,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <input type="password" name="password" id="password"><br>
 
         <label for="is_mitra">Apakah Anda ingin menjadi Mitra?</label><br>
-        <input type="radio" id="mitra_yes" name="is_mitra" value="1">
+        <input type="checkbox" id="mitra_yes" name="is_mitra" value="1">
         <label for="mitra_yes">Ya</label><br>
-        <input type="radio" id="mitra_no" name="is_mitra" value="0" checked>
-        <label for="mitra_no">Tidak</label><br><br>
+        <!-- <input type="radio" id="mitra_no" name="is_mitra" value="0" checked>
+        <label for="mitra_no">Tidak</label><br><br> -->
 
         <input type="submit" value="Daftar">
     </form>
-    <a href="index.html">Kembali</a>
+    <a href="index.php">Kembali</a>
 </body>
 
 </html>

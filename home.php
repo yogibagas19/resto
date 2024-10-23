@@ -4,12 +4,14 @@ require 'dbcon.php';
 session_start();
 
 if (!isset($_SESSION['username'])) {
-    header("Location: index.html");
+    header("Location: index.php");
 }
 
 $sessionUsername = $_SESSION['username'];
 $sessionMitra = $_SESSION['is_mitra'];
 $sessionId = $_SESSION['id'];
+// $sessionIdResto = $_SESSION['resto_id'];
+// $sessionResto = $_SESSION['nama_resto'];
 
 
 // set session nama resto dari tabel resto
@@ -38,6 +40,11 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
     }
 }
 
+$i = 1;
+$queryTampil = "select * from resto";
+$baris = mysqli_query($conn, $queryTampil);
+
+
 ?>
 
 <!DOCTYPE html>
@@ -46,57 +53,113 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="global.css">
     <title>Home</title>
 </head>
 
 <body>
-    <header>
-        <div class="navlink">
-            <div class="link">
-                <?php if ($sessionMitra == 0): ?>
-                    <a href="" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                        Bermitra
-                    </a>
-                <?php else: ?>
-                    <a href="inputResto.php">Daftarkan Resto</a>
-                <?php endif; ?>
-                <a href="">Tersimpan</a>
-                <a href="logout.php">logout</a>
-            </div>
-            <p class="user">Halo, <?php echo $sessionUsername; ?></p>
-        </div>
-        <p>Ini Header</p>
-    </header>
+    <?php include 'header.php'; ?>
+
+    <?php include 'modal.php'; ?>
 
     <main>
-
-    </main>
-
-
-
-
-    <!-- modal bermitra -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content" style="display: grid;
-    align-items: center;margin-top: 50%;">
-                <div class="modal-header" style="margin: auto;">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Apakah anda yakin untuk bermitra?</h1>
-                    <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
-                </div>
-                <div class="modal-footer" style="display: flex; margin: auto; gap: 15px;">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tidak</button>
-                    <form method="post">
-                        <input value="Ya" type="submit" class="btn btn-primary">
-                    </form>
-                </div>
+        <?php foreach ($baris as $list) : ?>
+            <div class="card">
+                <a href="pageResto.php?id=<?php echo $list['id']; ?>" class="resto-link">
+                    <div class="konteks">
+                        <p class="judul"><?php echo $list['nama']; ?></p>
+                        <p><?php echo $list['alamat']; ?></p>
+                        <p>Start From: <?php echo 'Rp' . number_format($list['min_price'], 0, ',', '.'); ?> - <?php echo 'Rp' . number_format($list['max_price'], 0, ',', '.'); ?></p>
+                    </div>
+                    <img src="<?php echo $list['foto']; ?>" alt="<?php echo $list['foto']; ?>">
+                </a>
+                <a class="save-button" href="simpanResto.php?id=<?php echo $list['id']; ?>">Simpan</a>
             </div>
-        </div>
-    </div>
+        <?php endforeach; ?>
+    </main>
 
 </body>
 
 </html>
+
+<!-- <script>
+    function saveResto(restoId) {
+        // Kirim AJAX request untuk menyimpan restoran
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "simpanResto.php", true);
+        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                alert("Restoran berhasil disimpan!");
+            }
+        };
+        xhr.send("resto_id=" + restoId);
+    }
+</script> -->
+
+<style>
+    main {
+        background-color: beige;
+        width: 95%;
+        height: auto;
+        margin: 10px auto;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+
+        .card {
+            background-color: #F7E6C4;
+            display: flex;
+            border-radius: 20px;
+            margin: 15px auto;
+            flex-direction: column;
+            justify-content: space-around;
+            align-items: center;
+            width: 100%;
+            height: 35vh;
+
+            .konteks {
+
+                .judul {
+                    font-size: 25px;
+                    font-weight: 700;
+                }
+            }
+
+            img {
+                margin-right: 25px;
+                width: 220px;
+                height: 220px;
+                border-radius: 25px;
+                object-fit: cover;
+                background-position: center;
+                background-size: cover;
+            }
+
+            .save-button {
+                background-color: #FF6347;
+                color: white;
+                border: none;
+                padding: 10px 20px;
+                border-radius: 10px;
+                cursor: pointer;
+                margin-top: 10px;
+                text-decoration: none;
+            }
+
+            .save-button:hover {
+                opacity: 80%;
+            }
+        }
+
+        a.resto-link {
+            text-decoration: none;
+            width: 100%;
+            color: inherit;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+
+        }
+    }
+</style>
