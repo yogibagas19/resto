@@ -10,35 +10,7 @@ if (!isset($_SESSION['username'])) {
 $sessionUsername = $_SESSION['username'];
 $sessionMitra = $_SESSION['is_mitra'];
 $sessionId = $_SESSION['id'];
-// $sessionIdResto = $_SESSION['resto_id'];
-// $sessionResto = $_SESSION['nama_resto'];
 
-
-// set session nama resto dari tabel resto
-// if ($sessionMitra == 1) {
-//     $queryResto = "select * from resto where added_by = '$sessionUsername'";
-
-//     $hasil = mysqli_query($conn, $queryResto);
-
-//     if ($hasil->num_rows > 0) {
-//         $row = $hasil->fetch_assoc();
-
-//         $_SESSION['resto'] = $row['nama'];
-//     }
-// }
-
-// $sessionResto = $_SESSION['resto'];
-
-if ($_SERVER["REQUEST_METHOD"] == 'POST') {
-    $queryMitra = "update users set is_mitra = 1 where id = '$sessionId'";
-
-    if (mysqli_query($conn, $queryMitra)) {
-        $sessionMitra = 1;
-        echo "<script>alert('Anda sekarang menjadi mitra!');</script>";
-    } else {
-        echo "Terjadi kesalahan: " . $conn->error;
-    }
-}
 
 $i = 1;
 $queryTampil = "select * from resto";
@@ -60,8 +32,6 @@ $baris = mysqli_query($conn, $queryTampil);
 <body>
     <?php include 'header.php'; ?>
 
-    <?php include 'modal.php'; ?>
-
     <main>
         <?php foreach ($baris as $list) : ?>
             <div class="card">
@@ -81,21 +51,6 @@ $baris = mysqli_query($conn, $queryTampil);
 </body>
 
 </html>
-
-<!-- <script>
-    function saveResto(restoId) {
-        // Kirim AJAX request untuk menyimpan restoran
-        var xhr = new XMLHttpRequest();
-        xhr.open("POST", "simpanResto.php", true);
-        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState == 4 && xhr.status == 200) {
-                alert("Restoran berhasil disimpan!");
-            }
-        };
-        xhr.send("resto_id=" + restoId);
-    }
-</script> -->
 
 <style>
     main {

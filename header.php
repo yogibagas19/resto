@@ -1,6 +1,19 @@
 <?php
+require 'dbcon.php';
 $sessionMitra = $_SESSION['is_mitra'];
 $sessionUsername = $_SESSION['username'];
+$sessionId = $_SESSION['id'];
+
+if ($_SERVER["REQUEST_METHOD"] == 'POST') {
+    $queryMitra = "update users set is_mitra = 1 where id = '$sessionId'";
+
+    if (mysqli_query($conn, $queryMitra)) {
+        $sessionMitra = 1;
+        echo "<script>alert('Anda sekarang menjadi mitra!');</script>";
+    } else {
+        echo "Terjadi kesalahan: " . $conn->error;
+    }
+}
 ?>
 
 <head>
@@ -27,6 +40,26 @@ $sessionUsername = $_SESSION['username'];
     </div>
     <p>Ini Header</p>
 </header>
+
+
+<!-- modal bermitra -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" style="display: grid;
+    align-items: center;margin-top: 50%;">
+            <div class="modal-header" style="margin: auto;">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Apakah anda yakin untuk bermitra?</h1>
+                <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
+            </div>
+            <div class="modal-footer" style="display: flex; margin: auto; gap: 15px;">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tidak</button>
+                <form method="post">
+                    <input value="Ya" type="submit" class="btn btn-primary">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
 <style>
     @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
